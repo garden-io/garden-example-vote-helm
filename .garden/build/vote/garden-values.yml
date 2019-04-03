@@ -1,0 +1,25 @@
+replicaCount: 1
+image:
+  repository: '127.0.0.1:5000/vote-helm-default/vote-image'
+  tag: v-4c19b32608-1554249315
+  pullPolicy: IfNotPresent
+nameOverride: ''
+fullnameOverride: ''
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: true
+  annotations: {}
+  paths:
+    - /
+  hosts:
+    - vote.dev-1.sys.garden
+  tls: []
+env:
+  API_HOSTNAME: api.dev-1.sys.garden
+  EXTERNAL_HOSTNAME: vote.dev-1.sys.garden
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

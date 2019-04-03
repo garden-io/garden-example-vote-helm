@@ -1,0 +1,11 @@
+replicaCount: 1
+image:
+  repository: worker-image
+  tag: v-676b05ecfd-1554247578
+  pullPolicy: IfNotPresent
+nameOverride: ''
+fullnameOverride: ''
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
