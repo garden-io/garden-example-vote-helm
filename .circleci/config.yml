@@ -1,3 +1,5 @@
+version: 2.1
+
 commands:
   install_garden:
     description: Installs the Garden CLI and its dependencies
@@ -38,13 +40,21 @@ commands:
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project $GOOGLE_PROJECT_ID && gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
             gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_ID --zone $GOOGLE_COMPUTE_ZONE
-            gcloud --quiet auth configure-dockerjobs
+            gcloud --quiet auth configure-docker
 jobs:
-  garden-test:
+  remote-test:
+    docker:
+      - image: circleci/node:10
     steps:
       - checkout
+      - setup_remote_docker
       - install_garden
       - configure_kubectl_context
       - run:
           name: Test project
-          command: garden test --logger-type=basic --env=garden-dev-1
+          command: garden test --logger-type=basic --env=dev-1
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - remote-test
