@@ -1,0 +1,18 @@
+project:
+  name: vote-helm
+  environments:
+    - name: local
+      providers:
+        - name: local-kubernetes
+          defaultHostname: vote-helm.local.app.garden
+      variables:
+        base-hostname: local.app.garden
+    - name: garden-dev-1
+      providers:
+        - name: kubernetes
+          context: garden-dev-1
+          buildMode: cluster-docker
+          defaultHostname: vote-helm-${local.env.CIRCLE_BRANCH || "default"}.dev-1.sys.garden
+          namespace: vote-helm-${local.env.CIRCLE_BRANCH || "default"}
+      variables:
+        base-hostname: dev-1.sys.garden
