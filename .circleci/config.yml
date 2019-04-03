@@ -1,34 +1,47 @@
 version: 2.1
 
-commands:
-  install_garden:
-    description: Installs the Garden CLI and its dependencies
+jobs:
+  garden-test:
+    docker:
+      - image: gardendev/garden:v0.9.7
     steps:
+      - checkout
+      - setup_remote_docker
+      - configure_kubectl_context
       - run:
-          name: Install Garden dependencies
-          command: |
-            sudo apt-get update && sudo apt-get install rsync
-            mkdir $HOME/kubectl
-            curl -L -o $HOME/kubectl/kubectl "https://storage.googleapis.com/kubernetes-release/release/v1.11.3/bin/linux/amd64/kubectl"
-            chmod +x $HOME/kubectl/kubectl
+          name: Test project
+          command: garden test --logger-type=basic --env=dev-1
+  garden-test-ee:
+    docker:
+        # TODO: pin to specific version
+      - image: gardendev/garden-ee:latest
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    steps:
+      - checkout
+      - configure_kubectl_context
       - run:
-          name: Install the Garden CLI
-          command: |
-            mkdir $HOME/garden
-            curl -L https://github.com/garden-io/garden/releases/download/v0.9.7/garden-v0.9.7-linux-amd64.tar.gz | tar xvz -C $HOME/garden --strip-components=1
-      - run:
-          name: Add Garden and Kubectl to the CircleCI agent path
-          command: |
-            echo 'export PATH=$HOME/garden:$PATH' >> $BASH_ENV
-            echo 'export PATH=$HOME/kubectl:$PATH' >> $BASH_ENV
+          name: Test project
+          command: garden test --logger-type=basic --env=dev-1-ee
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - garden-test
+      - garden-test-ee:
+          context: docker
+
+commands:
   configure_kubectl_context:
     description: Configure the kubectl context so that we can access our remote cluster
     steps:
       - run:
           name: Install GCloud
           command: |
+            apk add --no-cache python
             mkdir $HOME/gcloud
-            curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz | tar xvz -C $HOME/gcloud
+            curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz | tar xz -C $HOME/gcloud
             $HOME/gcloud/google-cloud-sdk/install.sh --quiet
       - run:
           name: Add GCloud to the CircleCI agent path
@@ -41,20 +54,3 @@ commands:
             gcloud --quiet config set project $GOOGLE_PROJECT_ID && gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
             gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_ID --zone $GOOGLE_COMPUTE_ZONE
             gcloud --quiet auth configure-docker
-jobs:
-  remote-test:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-      - setup_remote_docker
-      - install_garden
-      - configure_kubectl_context
-      - run:
-          name: Test project
-          command: garden test --logger-type=basic --env=dev-1
-workflows:
-  version: 2
-  commit:
-    jobs:
-      - remote-test

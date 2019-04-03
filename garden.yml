@@ -20,7 +20,7 @@ environments:
           namespace: garden-dev-200012
     variables:
       base-hostname: dev-1.sys.garden
-  - name: dev-1-enterprise
+  - name: dev-1-ee
     providers:
       - name: kubernetes
         context: gke_garden-dev-200012_europe-west1-b_garden-dev-1
