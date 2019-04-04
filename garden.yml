@@ -1,12 +1,13 @@
 kind: Project
 name: vote-helm
+defaultEnvironment: dev-1-ee
 environments:
   - name: local
     providers:
       - name: local-kubernetes
         defaultHostname: vote-helm.local.app.garden
     variables:
-      base-hostname: local.app.garden
+      base-hostname: foo.local.app.garden
   - name: dev-1
     providers:
       - name: kubernetes

@@ -1,16 +1,6 @@
 version: 2.1
 
 jobs:
-  garden-test:
-    docker:
-      - image: gardendev/garden-gcloud:v0.9.7
-    steps:
-      - checkout
-      - setup_remote_docker
-      - configure_kubectl_context
-      - run:
-          name: Test project
-          command: garden test --logger-type=basic --env=dev-1
   garden-test-ee:
     docker:
         # TODO: pin to specific version
@@ -28,7 +18,6 @@ workflows:
   version: 2
   test:
     jobs:
-      - garden-test
       - garden-test-ee:
           context: docker
 
