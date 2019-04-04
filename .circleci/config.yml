@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   garden-test:
     docker:
-      - image: gardendev/garden:v0.9.7
+      - image: gardendev/garden-gcloud:v0.9.7
     steps:
       - checkout
       - setup_remote_docker
@@ -14,7 +14,7 @@ jobs:
   garden-test-ee:
     docker:
         # TODO: pin to specific version
-      - image: gardendev/garden-ee:latest
+      - image: gardendev/garden-ee-gcloud:latest
         auth:
           username: $DOCKER_USER
           password: $DOCKER_PASS
@@ -26,7 +26,7 @@ jobs:
           command: garden test --logger-type=basic --env=dev-1-ee
 workflows:
   version: 2
-  commit:
+  test:
     jobs:
       - garden-test
       - garden-test-ee:
@@ -37,19 +37,8 @@ commands:
     description: Configure the kubectl context so that we can access our remote cluster
     steps:
       - run:
-          name: Install GCloud
-          command: |
-            apk add --no-cache python
-            mkdir $HOME/gcloud
-            curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz | tar xz -C $HOME/gcloud
-            $HOME/gcloud/google-cloud-sdk/install.sh --quiet
-      - run:
-          name: Add GCloud to the CircleCI agent path
-          command: echo 'export PATH=$HOME/gcloud/google-cloud-sdk/bin:$PATH' >> $BASH_ENV
-      - run:
           name: Configure kubectl context via gloud
           command: |
-            gcloud --quiet components update
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project $GOOGLE_PROJECT_ID && gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
             gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_ID --zone $GOOGLE_COMPUTE_ZONE
