@@ -24,6 +24,8 @@ def vote():
 
     app.logger.info("received request")
 
+    ##
+
     vote = None
 
     if request.method == 'POST':
