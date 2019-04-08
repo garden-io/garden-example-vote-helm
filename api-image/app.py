@@ -28,6 +28,8 @@ def vote():
 
     vote = None
 
+
+    # hello huawei
     if request.method == 'POST':
         redis = get_redis()
         vote = request.form['vote']
