@@ -1,7 +1,9 @@
 const axios = require('axios');
 const { expect } = require('chai');
 
-describe('POST /vote', () => {
+describe('POST /vote', function () {
+  this.timeout(10000)
+
   it('respond with message from hello-function', async () => {
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
