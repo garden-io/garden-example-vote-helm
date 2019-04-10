@@ -15,6 +15,10 @@ jobs:
       - run:
           name: Test project
           command: garden test --logger-type=basic --env=dev-1-ee
+      - run:
+          name: Cleanup
+          command: garden delete env --env=dev-1-ee
+          when: always
 workflows:
   version: 2
   test:
