@@ -27,7 +27,9 @@ def vote():
 
     vote = None
 
-    # hello Epic!
+    # Hallo!
+
+    
 
     if request.method == 'POST':
         redis = get_redis()
