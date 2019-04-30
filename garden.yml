@@ -22,7 +22,7 @@ environments:
       base-hostname: dev-1.sys.garden
   - name: dev-1-ee
     providers:
-      - name: kubernetes
+      - name: kubernetes-ee
         context: gke_garden-dev-200012_europe-west1-b_garden-dev-1
         buildMode: cluster-docker
         defaultHostname: vote-helm-${local.env.CIRCLE_BRANCH || "default"}.dev-1.sys.garden
