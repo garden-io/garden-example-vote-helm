@@ -3,5 +3,6 @@ module:
   type: helm
   name: redis
   chart: stable/redis
+  version: 7.1.0
   values:
     usePassword: false
