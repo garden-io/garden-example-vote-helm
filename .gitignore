@@ -63,3 +63,5 @@ typings/
 # Garden
 .garden
 
+# IDEs
+.vscode

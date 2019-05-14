@@ -28,4 +28,4 @@ environments:
         defaultHostname: vote-helm-${local.env.CIRCLE_BRANCH || "default"}.dev-1.sys.garden
         namespace: vote-helm-${local.env.CIRCLE_BRANCH || "default"}
     variables:
-      base-hostname: dev-1.sys.garden
+      base-hostname: vote-helm-${local.env.CIRCLE_BRANCH || "default"}.dev-1.sys.garden
