@@ -18,6 +18,14 @@ def get_redis():
         g.redis = Redis(host="redis-master", db=0, socket_timeout=5)
     return g.redis
 
+@app.route("/health/", methods=['GET'])
+def health():
+    response = app.response_class(
+      response='OK',
+      status=200,
+    )
+    return response
+
 @app.route("/vote/", methods=['POST','GET'])
 def vote():
     voter_id = hex(random.getrandbits(64))[2:-1]
