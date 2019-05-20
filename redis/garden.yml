@@ -1,8 +1,8 @@
-module:
-  description: Redis service for queueing votes before they are aggregated
-  type: helm
-  name: redis
-  chart: stable/redis
-  version: 7.1.0
-  values:
-    usePassword: false
+kind: Module
+description: Redis service for queueing votes before they are aggregated
+type: helm
+name: redis
+chart: stable/redis
+version: 7.1.0
+values:
+  usePassword: false
