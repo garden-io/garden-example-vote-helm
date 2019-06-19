@@ -14,10 +14,10 @@ jobs:
       - configure_kubectl_context
       - run:
           name: Test project
-          command: test --logger-type=basic --env=remote
+          command: garden test --logger-type=basic --env=remote
       - run:
           name: Cleanup
-          command: delete env --env=dev-1-ee
+          command: garden delete env --env=dev-1-ee
           when: always
 workflows:
   version: 2
