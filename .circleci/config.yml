@@ -5,7 +5,7 @@ jobs:
     docker:
         # Note: Here we're using the Enterprise Edition, which needs authentication to retrieve. To use the community
         #       edition, replace the image with gardendev/garden-cloud:<version> and remove the auth block.
-      - image: gardendev/garden-gcloud:master
+      - image: gardendev/garden-gcloud:1d02f13f
         auth:
           username: $DOCKER_USER
           password: $DOCKER_PASS
@@ -14,10 +14,10 @@ jobs:
       - configure_kubectl_context
       - run:
           name: Test project
-          command: garden test --logger-type=basic --env=dev-1-ee
+          command: test --logger-type=basic --env=remote
       - run:
           name: Cleanup
-          command: garden delete env --env=dev-1-ee
+          command: delete env --env=dev-1-ee
           when: always
 workflows:
   version: 2
