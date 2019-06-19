@@ -20,9 +20,9 @@ environments:
           namespace: garden-dev-200012
     variables:
       base-hostname: vote-helm-${local.env.CIRCLE_BRANCH || local.env.USER}.dev-1.sys.garden
-  - name: dev-1-ee
+  - name: remote 
     providers:
-      - name: kubernetes-ee
+      - name: kubernetes
         context: gke_garden-dev-200012_europe-west1-b_garden-dev-1
         buildMode: cluster-docker
         defaultHostname: vote-helm-${local.env.CIRCLE_BRANCH || local.env.USER}.dev-1.sys.garden
