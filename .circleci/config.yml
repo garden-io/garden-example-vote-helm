@@ -5,7 +5,7 @@ jobs:
     docker:
         # Note: Here we're using the Enterprise Edition, which needs authentication to retrieve. To use the community
         #       edition, replace the image with gardendev/garden-cloud:<version> and remove the auth block.
-      - image: gardendev/garden-gcloud
+      - image: gardendev/garden-gcloud:master
         auth:
           username: $DOCKER_USER
           password: $DOCKER_PASS
